@@ -33,6 +33,7 @@ services:
   tickets_web:
     image: rotheross/otobo:rel-10_0_9
     restart: always
+    env_file: tickets.env
     cap_drop:
         - ALL
     depends_on:
@@ -50,6 +51,7 @@ services:
   tickets_daemon:
     image: rotheross/otobo:rel-10_0_9
     restart: always
+    env_file: tickets.env
     cap_drop:
         - ALL
     depends_on:
@@ -69,7 +71,7 @@ services:
         - CAP_SETUID
     environment:
       discovery.type: single-node
-      ES_JAVA_OPTS: ${OTOBO_ELASTICSEARCH_ES_JAVA_OPTS:?err}
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
     volumes:
       - "./data/tickets/elastic:/usr/share/elasticsearch/data"
     networks:
