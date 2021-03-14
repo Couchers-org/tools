@@ -48,10 +48,10 @@ services:
       - "./data/tickets/otobo:/opt/otobo"
     command: web
     networks:
+      nginx:
       tickets_internal:
         aliases:
           - web
-      - nginx
   tickets_daemon:
     image: rotheross/otobo:rel-10_0_9
     restart: always
