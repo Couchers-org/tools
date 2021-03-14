@@ -45,7 +45,7 @@ services:
     expose:
       - 5000
     volumes:
-      - "./data/tickets/otobo:/opt/otobo"
+      - tickets_opt_otobo:/opt/otobo
     command: web
     networks:
       nginx:
@@ -61,7 +61,7 @@ services:
     depends_on:
       - tickets_web
     volumes:
-      - "./data/tickets/otobo:/opt/otobo"
+      - tickets_opt_otobo:/opt/otobo
     command: daemon
     networks:
       tickets_internal:
@@ -79,7 +79,7 @@ services:
       discovery.type: single-node
       ES_JAVA_OPTS: "-Xms512m -Xmx512m"
     volumes:
-      - "./data/tickets/elastic:/usr/share/elasticsearch/data"
+      - tickets_elasticsearch_data:/usr/share/elasticsearch/data
     networks:
       tickets_internal:
         aliases:
@@ -91,7 +91,7 @@ services:
     cap_drop:
         - ALL
     volumes:
-      - "./data/tickets/redis:/data"
+      - tickets_redis_data:/data
     networks:
       tickets_internal:
         aliases:
@@ -116,3 +116,8 @@ networks:
     driver: bridge
   tickets_internal:
     driver: bridge
+
+volumes:
+  tickets_opt_otobo: {}
+  tickets_elasticsearch_data: {}
+  tickets_redis_data: {}
