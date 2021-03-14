@@ -29,7 +29,9 @@ services:
     volumes:
       - "./data/tickets/db:/var/lib/postgresql/data"
     networks:
-      - tickets_internal
+      tickets_internal:
+        aliases:
+          - db
   tickets_web:
     image: rotheross/otobo:rel-10_0_9
     restart: always
@@ -46,7 +48,9 @@ services:
       - "./data/tickets/otobo:/opt/otobo"
     command: web
     networks:
-      - tickets_internal
+      tickets_internal:
+        aliases:
+          - web
       - nginx
   tickets_daemon:
     image: rotheross/otobo:rel-10_0_9
@@ -60,7 +64,9 @@ services:
       - "./data/tickets/otobo:/opt/otobo"
     command: daemon
     networks:
-      - tickets_internal
+      tickets_internal:
+        aliases:
+          - daemon
   tickets_elastic:
     image: rotheross/otobo-elasticsearch:rel-10_0_9
     restart: always
@@ -75,7 +81,9 @@ services:
     volumes:
       - "./data/tickets/elastic:/usr/share/elasticsearch/data"
     networks:
-      - tickets_internal
+      tickets_internal:
+        aliases:
+          - elastic
   tickets_redis:
     image: redis:6.0.8-alpine
     restart: always
@@ -85,7 +93,9 @@ services:
     volumes:
       - "./data/tickets/redis:/data"
     networks:
-      - tickets_internal
+      tickets_internal:
+        aliases:
+          - redis
 
   nginx:
     build: nginx
