@@ -24,6 +24,7 @@ services:
   nginx:
     build: nginx
     restart: always
+    env_file: nginx.env
     volumes:
       - "./data/certs/:/certs/"
       - "./data/nginx/logs/:/var/log/nginx/"
