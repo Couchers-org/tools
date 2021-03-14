@@ -1,0 +1,39 @@
+version: "3"
+services:
+  wikidb:
+    image: postgres:13
+    env_file: wikidb.env
+    logging:
+      driver: "none"
+    restart: unless-stopped
+    volumes:
+      - "./data/wiki:/var/lib/postgresql/data"
+    networks:
+      - wikidb
+  wiki:
+    image: requarks/wiki:2
+    depends_on:
+      - wikidb
+    env_file: wiki.env
+    restart: unless-stopped
+    #ports:
+    #  - 3000:3000
+    networks:
+      - wikidb
+      - frontend
+  nginx:
+    build: nginx
+    restart: always
+    volumes:
+      - "./data/certs/:/certs/"
+      - "./data/nginx/logs/:/var/log/nginx/"
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - frontend
+networks:
+  wikidb:
+    driver: bridge
+  frontend:
+    driver: bridge

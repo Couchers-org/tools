@@ -1,0 +1,31 @@
+server {
+    listen 80;
+    server_name wiki.couchers.org;
+    return 301 https://wiki.couchershq.org$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name wiki.couchers.org;
+
+    ssl_certificate /certs/live/wiki.couchers.org/fullchain.pem;
+    ssl_certificate_key /certs/live/wiki.couchers.org/privkey.pem;
+
+    return 301 https://wiki.couchershq.org$request_uri;
+}
+
+server {
+    listen 80;
+    server_name wikijs-trial.couchers.org;
+    return 301 https://wiki.couchershq.org$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name wikijs-trial.couchers.org;
+
+    ssl_certificate /certs/live/wikijs-trial.couchers.org/fullchain.pem;
+    ssl_certificate_key /certs/live/wikijs-trial.couchers.org/privkey.pem;
+
+    return 301 https://wiki.couchershq.org$request_uri;
+}
