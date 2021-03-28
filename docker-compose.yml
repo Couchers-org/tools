@@ -40,7 +40,7 @@ services:
         - ALL
     depends_on:
       - tickets_db
-      - tickets_elastic
+      # - tickets_elastic
       - tickets_redis
     expose:
       - 5000
@@ -67,23 +67,23 @@ services:
       tickets_internal:
         aliases:
           - daemon
-  tickets_elastic:
-    image: rotheross/otobo-elasticsearch:rel-10_0_9
-    restart: always
-    cap_drop:
-        - ALL
-    cap_add:
-        - CAP_SYS_CHROOT
-        - CAP_SETUID
-    environment:
-      discovery.type: single-node
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
-    volumes:
-      - tickets_elasticsearch_data:/usr/share/elasticsearch/data
-    networks:
-      tickets_internal:
-        aliases:
-          - elastic
+  # tickets_elastic:
+  #   image: rotheross/otobo-elasticsearch:rel-10_0_9
+  #   restart: always
+  #   cap_drop:
+  #       - ALL
+  #   cap_add:
+  #       - CAP_SYS_CHROOT
+  #       - CAP_SETUID
+  #   environment:
+  #     discovery.type: single-node
+  #     ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+  #   volumes:
+  #     - tickets_elasticsearch_data:/usr/share/elasticsearch/data
+  #   networks:
+  #     tickets_internal:
+  #       aliases:
+  #         - elastic
   tickets_redis:
     image: redis:6.0.8-alpine
     restart: always
@@ -119,5 +119,5 @@ networks:
 
 volumes:
   tickets_opt_otobo: {}
-  tickets_elasticsearch_data: {}
+  # tickets_elasticsearch_data: {}
   tickets_redis_data: {}
