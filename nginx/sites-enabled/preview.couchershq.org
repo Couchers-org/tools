@@ -1,4 +1,25 @@
 server {
+    listen 443 ssl;
+    server_name preview.couchershq.org;
+
+    access_log /var/log/nginx/preview.couchershq.org.access.log;
+    error_log /var/log/nginx/preview.couchershq.org.error.log;
+
+    ssl_certificate /certs/live/preview.couchershq.org/fullchain.pem;
+    ssl_certificate_key /certs/live/preview.couchershq.org/privkey.pem;
+
+    location = / {
+        add_header Content-Type text/plain;
+        return 200 "Couchers.org deploy previews.\n\nGo to https://gitlab.com/couchers/couchers/-/pipelines and find the right link or see instructions on GitHub.";
+    }
+
+    location = /robots.txt {
+        add_header Content-Type text/plain;
+        return 200 "User-agent: *\nDisallow: /\n";
+    }
+}
+
+server {
     # we want to be able to preview frontend PRs, etc, so they're being uploaded to e.g.
     # https://couchers-dev-assets.s3.amazonaws.com/frontend/ci-test-results-90b9e9ee/index.html
     # the problem is that this tries to load js from /js/..., which gets screwed up being in a subfolder
@@ -23,11 +44,6 @@ server {
     location = /robots.txt {
         add_header Content-Type text/plain;
         return 200 "User-agent: *\nDisallow: /\n";
-    }
-
-    location = / {
-        add_header Content-Type text/plain;
-        return 200 "Couchers.org deploy previews.\n\nGo to https://gitlab.com/couchers/couchers/-/pipelines and find the right link or see instructions on GitHub.";
     }
 
     location / {
