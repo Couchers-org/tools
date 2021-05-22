@@ -29,7 +29,7 @@ server {
     }
 
     location @index {
-        set $page /index.html
+        set $page "/index.html";
         proxy_pass https://couchers-dev-assets.s3.amazonaws.com/frontend/develop$page;
     }
 }
