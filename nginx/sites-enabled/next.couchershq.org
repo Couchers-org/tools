@@ -1,4 +1,10 @@
 server {
+    listen 80;
+    server_name next.couchershq.org;
+    return 301 https://next.couchershq.org$request_uri;
+}
+
+server {
     listen 443 ssl http2;
     server_name next.couchershq.org;
 
