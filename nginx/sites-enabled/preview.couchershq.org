@@ -10,7 +10,7 @@ server {
 
     location = / {
         add_header Content-Type text/plain;
-        return 200 "Couchers.org deploy previews.\n\nGo to https://gitlab.com/couchers/couchers/-/pipelines and find the right link or see instructions on GitHub.";
+        return 200 "Couchers.org deploy previews.\n\nVisit https://next.couchershq.org for the latest staging environment.\n\nFor previews, go to https://gitlab.com/couchers/couchers/-/pipelines and find the right link or see instructions on GitHub.";
     }
 
     location = /robots.txt {
