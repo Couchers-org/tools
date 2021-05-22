@@ -23,8 +23,13 @@ server {
         # we want to do some logic based on upstream errors
         proxy_intercept_errors on;
         # if we get a 403 Forbidden (what S3 sends for not found), get instead the index page
-        error_page 403 https://couchers-dev-assets.s3.amazonaws.com/frontend/develop/index.html;
-        error_page 404 https://couchers-dev-assets.s3.amazonaws.com/frontend/develop/index.html;
+        error_page 403 = @index;
+        error_page 404 = @index;
         proxy_pass https://couchers-dev-assets.s3.amazonaws.com/frontend/develop$uri;
+    }
+
+    location @index {
+        set $page /index.html
+        proxy_pass https://couchers-dev-assets.s3.amazonaws.com/frontend/develop$page;
     }
 }
