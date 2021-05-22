@@ -52,7 +52,7 @@ server {
         # if we get a 403 Forbidden (what S3 sends for not found), get instead the index page
         error_page 403 = @index;
         error_page 404 = @index;
-        proxy_pass https://couchers-dev-assets.s3.amazonaws.com/$sub2/$sub1;
+        proxy_pass https://couchers-dev-assets.s3.amazonaws.com/$sub2/$sub1$uri;
     }
 
     location @index {
