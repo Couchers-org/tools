@@ -137,7 +137,7 @@ networks:
     driver: bridge
   tickets_internal:
     driver: bridge
-  calendso:
+  calendso_db:
     driver: bridge
 
 volumes:
