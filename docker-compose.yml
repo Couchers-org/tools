@@ -97,6 +97,27 @@ services:
         aliases:
           - redis
 
+  calendso_db:
+    image: postgres:13
+    env_file: calendso_db.env
+    restart: always
+    logging:
+      driver: "none"
+    volumes:
+      - "./data/calendso/db:/var/lib/postgresql/data"
+    networks:
+      - calendso_db
+  calendso:
+    image: registry.gitlab.com/couchers/calendso-docker/calendso
+    expose:
+      - 5555
+    env_file: calendso.env
+    depends_on:
+      - calendso_db
+    networks:
+      - calendso_db
+      - nginx
+
   nginx:
     build: nginx
     env_file: nginx.env
@@ -115,6 +136,8 @@ networks:
   nginx:
     driver: bridge
   tickets_internal:
+    driver: bridge
+  calendso:
     driver: bridge
 
 volumes:
