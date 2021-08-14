@@ -110,7 +110,7 @@ services:
   calendso:
     image: registry.gitlab.com/couchers/calendso-docker/calendso
     expose:
-      - 5555
+      - 3000
     env_file: calendso.env
     depends_on:
       - calendso_db
