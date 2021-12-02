@@ -118,6 +118,41 @@ services:
   #     - calendso_db
   #     - nginx
 
+  weblate_database:
+    image: postgres:13-alpine
+    env_file:
+      - ./weblate.env
+    volumes:
+      - "./data/weblate/db:/var/lib/postgresql/data"
+    restart: always
+    networks:
+      - weblate_internal
+  weblate_cache:
+    image: redis:6-alpine
+    restart: always
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - "./data/weblate/redis:/data"
+    networks:
+      - weblate_internal
+  weblate:
+    image: weblate/weblate
+    tmpfs:
+      - /app/cache
+    volumes:
+      - "./data/weblate/data:/app/data"
+    env_file:
+      - ./weblate/environment
+      - ./weblate.env
+    restart: always
+    depends_on:
+      - weblate_database
+      - weblate_cache
+    networks:
+      - weblate_internal
+      - nginx
+
+
   nginx:
     build: nginx
     env_file: nginx.env
@@ -136,6 +171,8 @@ networks:
   nginx:
     driver: bridge
   tickets_internal:
+    driver: bridge
+  weblate_internal:
     driver: bridge
   # calendso_db:
   #   driver: bridge
