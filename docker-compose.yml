@@ -104,7 +104,6 @@ services:
     volumes:
       - "./data/weblate/data:/app/data"
     env_file:
-      - ./weblate/environment
       - ./weblate.env
     restart: always
     depends_on:
