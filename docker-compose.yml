@@ -41,12 +41,11 @@ services:
         - ALL
     depends_on:
       - tickets_db
-      # - tickets_elastic
       - tickets_redis
     expose:
       - 5000
     volumes:
-      - tickets_opt_otobo:/opt/otobo
+      - "./data/tickets/data:/opt/otobo"
     command: web
     networks:
       nginx:
@@ -62,7 +61,7 @@ services:
     depends_on:
       - tickets_web
     volumes:
-      - tickets_opt_otobo:/opt/otobo
+      - "./data/tickets/data:/opt/otobo"
     command: daemon
     networks:
       tickets_internal:
@@ -75,13 +74,13 @@ services:
     cap_drop:
         - ALL
     volumes:
-      - tickets_redis_data:/data
+      - "./data/tickets/reds:/data"
     networks:
       tickets_internal:
         aliases:
           - redis
 
-  weblate_database:
+  weblate_db:
     image: postgres:15-alpine
     env_file:
       - ./weblate.env
@@ -109,7 +108,7 @@ services:
       - ./weblate.env
     restart: always
     depends_on:
-      - weblate_database
+      - weblate_db
       - weblate_cache
     networks:
       - weblate_internal
@@ -137,7 +136,3 @@ networks:
     driver: bridge
   weblate_internal:
     driver: bridge
-
-volumes:
-  tickets_opt_otobo: {}
-  tickets_redis_data: {}
