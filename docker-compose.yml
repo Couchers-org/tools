@@ -1,7 +1,8 @@
-version: "3"
+version: "3.8"
+
 services:
   wiki_db:
-    image: postgres:13
+    image: postgres:15
     env_file: wiki_db.env
     restart: always
     logging:
@@ -21,7 +22,7 @@ services:
       - nginx
 
   tickets_db:
-    image: postgres:13
+    image: postgres:15
     env_file: tickets_db.env
     restart: always
     logging:
@@ -67,23 +68,6 @@ services:
       tickets_internal:
         aliases:
           - daemon
-  # tickets_elastic:
-  #   image: rotheross/otobo-elasticsearch:rel-10_0_9
-  #   restart: always
-  #   cap_drop:
-  #       - ALL
-  #   cap_add:
-  #       - CAP_SYS_CHROOT
-  #       - CAP_SETUID
-  #   environment:
-  #     discovery.type: single-node
-  #     ES_JAVA_OPTS: "-Xms512m -Xmx512m"
-  #   volumes:
-  #     - tickets_elasticsearch_data:/usr/share/elasticsearch/data
-  #   networks:
-  #     tickets_internal:
-  #       aliases:
-  #         - elastic
   tickets_redis:
     image: redis:6.0.8-alpine
     restart: always
@@ -97,29 +81,8 @@ services:
         aliases:
           - redis
 
-  # calendso_db:
-  #   image: postgres:13
-  #   env_file: calendso_db.env
-  #   restart: always
-  #   logging:
-  #     driver: "none"
-  #   volumes:
-  #     - "./data/calendso/db:/var/lib/postgresql/data"
-  #   networks:
-  #     - calendso_db
-  # calendso:
-  #   image: registry.gitlab.com/couchers/calendso-docker/calendso
-  #   expose:
-  #     - 3000
-  #   env_file: calendso.env
-  #   depends_on:
-  #     - calendso_db
-  #   networks:
-  #     - calendso_db
-  #     - nginx
-
   weblate_database:
-    image: postgres:13-alpine
+    image: postgres:15-alpine
     env_file:
       - ./weblate.env
     volumes:
@@ -136,7 +99,7 @@ services:
     networks:
       - weblate_internal
   weblate:
-    image: weblate/weblate
+    image: weblate/weblate:4.12.1-1
     tmpfs:
       - /app/cache
     volumes:
@@ -174,10 +137,7 @@ networks:
     driver: bridge
   weblate_internal:
     driver: bridge
-  # calendso_db:
-  #   driver: bridge
 
 volumes:
   tickets_opt_otobo: {}
-  # tickets_elasticsearch_data: {}
   tickets_redis_data: {}
