@@ -97,6 +97,10 @@ services:
       - "./data/weblate/redis:/data"
     networks:
       - weblate_internal
+    networks:
+      weblate_internal:
+        aliases:
+          - redis
   weblate:
     image: weblate/weblate:4.12.1-1
     tmpfs:
