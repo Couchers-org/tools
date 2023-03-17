@@ -74,7 +74,7 @@ services:
     cap_drop:
         - ALL
     volumes:
-      - "./data/tickets/reds:/data"
+      - "./data/tickets/redis:/data"
     networks:
       tickets_internal:
         aliases:
