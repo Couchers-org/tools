@@ -21,62 +21,62 @@ services:
       - wiki_db
       - nginx
 
-  tickets_db:
+  otobo_db:
     image: postgres:15
-    env_file: tickets_db.env
+    env_file: otobo_db.env
     restart: always
     logging:
       driver: "none"
     volumes:
-      - "./data/tickets/db:/var/lib/postgresql/data"
+      - "./data/otobo/db:/var/lib/postgresql/data"
     networks:
-      tickets_internal:
+      otobo_internal:
         aliases:
           - db
-  tickets_web:
+  otobo_web:
     image: rotheross/otobo:rel-10_0_9
     restart: always
-    env_file: tickets.env
+    env_file: otobo.env
     cap_drop:
         - ALL
     depends_on:
-      - tickets_db
-      - tickets_redis
+      - otobo_db
+      - otobo_redis
     expose:
       - 5000
     volumes:
-      - "./data/tickets/data:/opt/otobo"
+      - "./data/otobo/data:/opt/otobo"
     command: web
     networks:
       nginx:
-      tickets_internal:
+      otobo_internal:
         aliases:
           - web
-  tickets_daemon:
+  otobo_daemon:
     image: rotheross/otobo:rel-10_0_9
     restart: always
-    env_file: tickets.env
+    env_file: otobo.env
     cap_drop:
         - ALL
     depends_on:
-      - tickets_web
+      - otobo_web
     volumes:
-      - "./data/tickets/data:/opt/otobo"
+      - "./data/otobo/data:/opt/otobo"
     command: daemon
     networks:
-      tickets_internal:
+      otobo_internal:
         aliases:
           - daemon
-  tickets_redis:
+  otobo_redis:
     image: redis:6.0.8-alpine
     restart: always
     user: redis:redis
     cap_drop:
         - ALL
     volumes:
-      - "./data/tickets/redis:/data"
+      - "./data/otobo/redis:/data"
     networks:
-      tickets_internal:
+      otobo_internal:
         aliases:
           - redis
 
@@ -135,7 +135,7 @@ networks:
     driver: bridge
   nginx:
     driver: bridge
-  tickets_internal:
+  otobo_internal:
     driver: bridge
   weblate_internal:
     driver: bridge
