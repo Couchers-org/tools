@@ -5,8 +5,6 @@ services:
     image: postgres:15
     env_file: wiki_db.env
     restart: always
-    logging:
-      driver: "none"
     volumes:
       - "./data/wiki/db:/var/lib/postgresql/data"
     networks:
@@ -25,8 +23,6 @@ services:
     image: postgres:15
     env_file: otobo_db.env
     restart: always
-    logging:
-      driver: "none"
     volumes:
       - "./data/otobo/db:/var/lib/postgresql/data"
     networks:
