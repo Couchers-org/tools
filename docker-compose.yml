@@ -8,7 +8,9 @@ services:
     volumes:
       - "./data/wiki/db:/var/lib/postgresql/data"
     networks:
-      - wiki_db
+      wiki_internal:
+        aliases:
+          - db
   wiki:
     image: requarks/wiki:2
     env_file: wiki.env
@@ -16,7 +18,7 @@ services:
     depends_on:
       - wiki_db
     networks:
-      - wiki_db
+      - wiki_internal
       - nginx
 
   otobo_db:
@@ -127,9 +129,9 @@ services:
     networks:
       - nginx
 networks:
-  wiki_db:
-    driver: bridge
   nginx:
+    driver: bridge
+  wiki_internal:
     driver: bridge
   otobo_internal:
     driver: bridge
